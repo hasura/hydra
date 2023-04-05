@@ -91,7 +91,7 @@ func (m *SQLManager) revokeConsentSession(ctx context.Context, user, client stri
 	var challenges = make([]string, 0)
 	/* #nosec G201 - see "part" */
 	if err := m.DB.SelectContext(ctx, &challenges, m.DB.Rebind(fmt.Sprintf(
-		`SELECT r.challenge FROM hydra_oauth2_consent_request_handled as h 
+		`SELECT r.challenge FROM hydra_oauth2_consent_request_handled as h
 JOIN hydra_oauth2_consent_request as r ON r.challenge = h.challenge WHERE %s`,
 		part,
 	)), args...); err != nil {
@@ -102,12 +102,12 @@ JOIN hydra_oauth2_consent_request as r ON r.challenge = h.challenge WHERE %s`,
 	}
 
 	for _, challenge := range challenges {
-		if err := m.r.OAuth2Storage().RevokeAccessToken(ctx, challenge); errors.Cause(err) == fosite.ErrNotFound {
+		if err := m.r.OAuth2Storage().RevokeAccessToken(ctx, challenge); errors.Is(err, fosite.ErrNotFound) {
 			// do nothing
 		} else if err != nil {
 			return err
 		}
-		if err := m.r.OAuth2Storage().RevokeRefreshToken(ctx, challenge); errors.Cause(err) == fosite.ErrNotFound {
+		if err := m.r.OAuth2Storage().RevokeRefreshToken(ctx, challenge); errors.Is(err, fosite.ErrNotFound) {
 			// do nothing
 		} else if err != nil {
 			return err
@@ -119,14 +119,14 @@ JOIN hydra_oauth2_consent_request as r ON r.challenge = h.challenge WHERE %s`,
 	case "mysql":
 		/* #nosec G201 - see "part" */
 		queries = append(queries,
-			fmt.Sprintf(`DELETE h, r FROM hydra_oauth2_consent_request_handled as h 
+			fmt.Sprintf(`DELETE h, r FROM hydra_oauth2_consent_request_handled as h
 JOIN hydra_oauth2_consent_request as r ON r.challenge = h.challenge
 WHERE %s`, part),
 		)
 	default:
 		queries = append(queries,
 			/* #nosec G201 - see "part" */
-			fmt.Sprintf(`DELETE FROM hydra_oauth2_consent_request_handled 
+			fmt.Sprintf(`DELETE FROM hydra_oauth2_consent_request_handled
 WHERE challenge IN (SELECT r.challenge FROM hydra_oauth2_consent_request as r WHERE %s)`, part),
 			/* #nosec G201 - see "part" */
 			fmt.Sprintf(`DELETE FROM hydra_oauth2_consent_request as r WHERE %s`, part),
@@ -295,7 +295,7 @@ func (m *SQLManager) HandleConsentRequest(ctx context.Context, challenge string,
 		":"+strings.Join(sqlParamsConsentRequestHandled, ", :"),
 	), r); err != nil {
 		err = sqlcon.HandleError(err)
-		if errors.Cause(err) == sqlcon.ErrUniqueViolation {
+		if errors.Is(err, sqlcon.ErrUniqueViolation) {
 			return m.replaceUnusedConsentRequest(ctx, challenge, r)
 		}
 		return nil, err
@@ -495,7 +495,7 @@ func (m *SQLManager) resolveHandledConsentRequests(ctx context.Context, requests
 		r, err := m.GetConsentRequest(ctx, v.Challenge)
 		if err != nil {
 			return nil, err
-		} else if errors.Cause(err) == x.ErrNotFound {
+		} else if errors.Is(err, x.ErrNotFound) {
 			return nil, errors.WithStack(ErrNoPreviousConsentFound)
 		}
 

@@ -175,7 +175,7 @@ func (s *FositeMemoryStore) GetOpenIDConnectSession(ctx context.Context, code st
 		return nil, errors.Wrap(fosite.ErrNotFound, "")
 	}
 
-	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Cause(err) == sqlcon.ErrNoRows {
+	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Is(err, sqlcon.ErrNoRows) {
 		s.Lock()
 		delete(s.IDSessions, code)
 		s.Unlock()
@@ -214,7 +214,7 @@ func (s *FositeMemoryStore) GetAuthorizeCodeSession(ctx context.Context, code st
 		return rel.Requester, errors.WithStack(fosite.ErrInvalidatedAuthorizeCode)
 	}
 
-	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Cause(err) == sqlcon.ErrNoRows {
+	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Is(err, sqlcon.ErrNoRows) {
 		s.Lock()
 		delete(s.AuthorizeCodes, code)
 		s.Unlock()
@@ -255,7 +255,7 @@ func (s *FositeMemoryStore) GetAccessTokenSession(ctx context.Context, signature
 		return nil, errors.Wrap(fosite.ErrNotFound, "")
 	}
 
-	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Cause(err) == sqlcon.ErrNoRows {
+	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Is(err, sqlcon.ErrNoRows) {
 		s.Lock()
 		delete(s.AccessTokens, signature)
 		s.Unlock()
@@ -294,7 +294,7 @@ func (s *FositeMemoryStore) GetRefreshTokenSession(ctx context.Context, signatur
 		return nil, errors.Wrap(fosite.ErrNotFound, "")
 	}
 
-	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Cause(err) == sqlcon.ErrNoRows {
+	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Is(err, sqlcon.ErrNoRows) {
 		s.Lock()
 		delete(s.RefreshTokens, signature)
 		s.Unlock()
@@ -392,7 +392,7 @@ func (s *FositeMemoryStore) GetPKCERequestSession(ctx context.Context, code stri
 		return nil, errors.WithStack(fosite.ErrNotFound)
 	}
 
-	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Cause(err) == sqlcon.ErrNoRows {
+	if _, err := s.r.ClientManager().GetClient(ctx, rel.GetClient().GetID()); errors.Is(err, sqlcon.ErrNoRows) {
 		s.Lock()
 		delete(s.RefreshTokens, code)
 		s.Unlock()

@@ -121,7 +121,7 @@ func (h *Handler) SetRoutes(admin *x.RouterAdmin, public *x.RouterPublic, corsMi
 func (h *Handler) LogoutHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	handled, err := h.r.ConsentStrategy().HandleOpenIDConnectLogout(w, r)
 
-	if errors.Cause(err) == consent.ErrAbortOAuth2Request {
+	if errors.Is(err, consent.ErrAbortOAuth2Request) {
 		return
 	} else if err != nil {
 		x.LogError(err, h.r.Logger())
@@ -622,7 +622,7 @@ func (h *Handler) AuthHandler(w http.ResponseWriter, r *http.Request, _ httprout
 	}
 
 	session, err := h.r.ConsentStrategy().HandleOAuth2AuthorizationRequest(w, r, authorizeRequest)
-	if errors.Cause(err) == consent.ErrAbortOAuth2Request {
+	if errors.Is(err, consent.ErrAbortOAuth2Request) {
 		// do nothing
 		return
 	} else if err != nil {
