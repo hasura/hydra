@@ -15,8 +15,8 @@ require (
 	github.com/gobuffalo/packr/v2 v2.7.1
 	github.com/gobwas/glob v0.2.3
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
-	github.com/golang/mock v1.4.3
-	github.com/google/uuid v1.1.1
+	github.com/golang/mock v1.6.0
+	github.com/google/uuid v1.3.0
 	github.com/gorilla/securecookie v1.1.1
 	github.com/gorilla/sessions v1.1.4-0.20181208214519-12bd4761fc66
 	github.com/gtank/cryptopasta v0.0.0-20170601214702-1f550f6f2f69
@@ -29,7 +29,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.1
 	github.com/opentracing/opentracing-go v1.1.1-0.20190913142402-a7454ce5950e
 	github.com/ory/analytics-go/v4 v4.0.1
-	github.com/ory/fosite v0.34.0
+	github.com/ory/fosite v0.34.1
 	github.com/ory/go-acc v0.2.5
 	github.com/ory/graceful v0.1.1
 	github.com/ory/herodot v0.7.0
@@ -46,18 +46,22 @@ require (
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/cobra v1.0.0
 	github.com/sqs/goreturns v0.0.0-20181028201513-538ac6014518
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.8.3
 	github.com/tidwall/gjson v1.9.3
 	github.com/toqueteos/webbrowser v1.2.0
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/urfave/negroni v1.0.0
 	go.opentelemetry.io/otel v0.2.1
-	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd
-	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/tools v0.1.12
+	golang.org/x/crypto v0.17.0
+	golang.org/x/oauth2 v0.10.0
+	golang.org/x/tools v0.10.0
 	gopkg.in/square/go-jose.v2 v2.5.1
 )
 
-replace golang.org/x/net => golang.org/x/net v0.7.0
+replace (
+	go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.5.1
+	golang.org/x/net => golang.org/x/net v0.17.0
+	google.golang.org/grpc => google.golang.org/grpc v1.58.3
+)
 
 replace github.com/dgrijalva/jwt-go v3.2.0+incompatible => github.com/golang-jwt/jwt/v4 v4.0.0
