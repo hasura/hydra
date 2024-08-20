@@ -20,7 +20,7 @@ require (
 	github.com/gorilla/securecookie v1.1.1
 	github.com/gorilla/sessions v1.1.4-0.20181208214519-12bd4761fc66
 	github.com/gtank/cryptopasta v0.0.0-20170601214702-1f550f6f2f69
-	github.com/jackc/pgx/v4 v4.4.1
+	github.com/jackc/pgx/v4 v4.18.2
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/mattn/go-runewidth v0.0.14 // indirect
@@ -52,7 +52,7 @@ require (
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/urfave/negroni v1.0.0
 	go.opentelemetry.io/otel v0.2.1
-	golang.org/x/crypto v0.17.0
+	golang.org/x/crypto v0.21.0
 	golang.org/x/oauth2 v0.10.0
 	golang.org/x/tools v0.10.0
 	gopkg.in/square/go-jose.v2 v2.5.1
@@ -60,8 +60,9 @@ require (
 
 replace (
 	go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.5.1
-	golang.org/x/net => golang.org/x/net v0.17.0
+	golang.org/x/net => golang.org/x/net v0.23.0
 	google.golang.org/grpc => google.golang.org/grpc v1.58.3
+	google.golang.org/protobuf => google.golang.org/protobuf v1.33.0
 )
 
 replace github.com/dgrijalva/jwt-go v3.2.0+incompatible => github.com/golang-jwt/jwt/v4 v4.0.0
