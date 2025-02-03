@@ -52,15 +52,15 @@ require (
 	github.com/uber/jaeger-client-go v2.22.1+incompatible
 	github.com/urfave/negroni v1.0.0
 	go.opentelemetry.io/otel v0.2.1
-	golang.org/x/crypto v0.21.0
+	golang.org/x/crypto v0.31.0
 	golang.org/x/oauth2 v0.10.0
-	golang.org/x/tools v0.10.0
+	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d
 	gopkg.in/square/go-jose.v2 v2.5.1
 )
 
 replace (
 	go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.5.1
-	golang.org/x/net => golang.org/x/net v0.23.0
+	golang.org/x/net => golang.org/x/net v0.33.0
 	google.golang.org/grpc => google.golang.org/grpc v1.58.3
 	google.golang.org/protobuf => google.golang.org/protobuf v1.33.0
 )
