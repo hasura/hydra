@@ -1,3 +1,14 @@
+# Hasura hardened Alpine image for Hydra v2.x (self-hosted / DDN).
+# Built manually and pushed to gcr.io/hasura-ee/hydra.
+#
+# Versioning: Hasura maintains its own patch version independent of upstream
+# Ory tags. Increment the Hasura patch version each time the image is rebuilt
+# (e.g. v2.3.1, v2.3.2, …). Append the Alpine version to the tag.
+#
+# Build & push:
+#   docker build -f Dockerfile-hasura-alpine -t gcr.io/hasura-ee/hydra:v2.3.1-alpine3.23.6 .
+#   docker push gcr.io/hasura-ee/hydra:v2.3.1-alpine3.23.6
+
 FROM golang:1.26.8-bookworm@sha256:a688600ca24f8a4d3ca77f95b0dd40704a9fc787c826660eb7ba0b641b8b175d AS builder
 
 WORKDIR /go/src/github.com/ory/hydra
