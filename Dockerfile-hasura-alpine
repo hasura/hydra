@@ -31,13 +31,8 @@ RUN go build -trimpath -ldflags="-extldflags=-static" -tags sqlite,sqlite_omit_l
 FROM alpine:3.23.6@sha256:85fe1e81d6758c208f3e1eed4338a1997e19d4be002d4dd32d3100c9a8c010a0
 
 RUN apk add --no-cache --upgrade ca-certificates && \
-    addgroup --system --gid 65532 nonroot && \
-    adduser --system --uid 65532 \
-      --gecos "nonroot User" \
-      --home /home/nonroot \
-      --ingroup nonroot \
-      --shell /sbin/nologin \
-      nonroot
+    addgroup -S ory && \
+    adduser -S ory -G ory -D -H -s /bin/nologin
 
 COPY --from=builder /usr/bin/hydra /usr/bin/hydra
 
@@ -45,7 +40,7 @@ COPY --from=builder /usr/bin/hydra /usr/bin/hydra
 # - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
 RUN echo 'hosts: files dns' > /etc/nsswitch.conf
 
-USER nonroot
+USER ory
 
 ENTRYPOINT ["hydra"]
 CMD ["serve", "all"]
