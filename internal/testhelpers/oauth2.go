@@ -206,7 +206,7 @@ func NewEmptyCookieJar(t testing.TB) *cookiejar.Jar {
 func NewEmptyJarClient(t testing.TB) *http.Client {
 	return &http.Client{
 		Jar:       NewEmptyCookieJar(t),
-		Transport: &loggingTransport{t},
+		Transport: &loggingTransport{t: t, base: otelhttp.NewTransport(http.DefaultTransport)},
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			//t.Logf("Redirect to %s", req.URL.String())
 
@@ -221,11 +221,14 @@ func NewEmptyJarClient(t testing.TB) *http.Client {
 	}
 }
 
-type loggingTransport struct{ t testing.TB }
+type loggingTransport struct {
+	t    testing.TB
+	base http.RoundTripper
+}
 
 func (s *loggingTransport) RoundTrip(r *http.Request) (*http.Response, error) {
 	//s.t.Logf("%s %s", r.Method, r.URL.String())
 	//s.t.Logf("%s %s\nWith Cookies: %v", r.Method, r.URL.String(), r.Cookies())
 
-	return otelhttp.DefaultClient.Transport.RoundTrip(r)
+	return s.base.RoundTrip(r)
 }
