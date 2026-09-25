@@ -47,7 +47,8 @@ import (
 	"github.com/rs/cors"
 	"github.com/spf13/cobra"
 	"github.com/urfave/negroni"
-	"go.opentelemetry.io/otel/plugin/httptrace"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/trace"
 
 	"github.com/ory/graceful"
 	"github.com/ory/hydra/client"
@@ -184,13 +185,14 @@ func setTracingLogger(logger *reqlog.Middleware) {
 	logger.Before = func(entry *logrus.Entry, r *http.Request, remoteAddr string) *logrus.Entry {
 		fields := before(entry, r, remoteAddr)
 
-		_, _, spanCtx := httptrace.Extract(r.Context(), r)
+		ctx := propagation.TraceContext{}.Extract(r.Context(), propagation.HeaderCarrier(r.Header))
+		spanCtx := trace.SpanContextFromContext(ctx)
 
-		if spanCtx.HasTraceID() {
-			fields = fields.WithField("trace_id", spanCtx.TraceIDString())
+		if spanCtx.TraceID().IsValid() {
+			fields = fields.WithField("trace_id", spanCtx.TraceID().String())
 		}
-		if spanCtx.HasSpanID() {
-			fields = fields.WithField("span_id", spanCtx.SpanIDString())
+		if spanCtx.SpanID().IsValid() {
+			fields = fields.WithField("span_id", spanCtx.SpanID().String())
 		}
 
 		return fields
