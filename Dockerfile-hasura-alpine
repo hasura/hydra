@@ -1,4 +1,4 @@
-FROM golang:1.22-bookworm@sha256:3d699e4d15d0f8f13c9195c0632a16702b8cbdece2955af1c23b37ae5d55a253 AS builder
+FROM golang:1.26.8-bookworm@sha256:a688600ca24f8a4d3ca77f95b0dd40704a9fc787c826660eb7ba0b641b8b175d AS builder
 
 WORKDIR /go/src/github.com/ory/hydra
 
@@ -17,7 +17,7 @@ RUN go mod download
 COPY . .
 RUN go build -trimpath -ldflags="-extldflags=-static" -tags sqlite,sqlite_omit_load_extension -o /usr/bin/hydra
 
-FROM alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
+FROM alpine:3.23.6@sha256:85fe1e81d6758c208f3e1eed4338a1997e19d4be002d4dd32d3100c9a8c010a0
 
 RUN apk add --no-cache --upgrade ca-certificates && \
     addgroup --system --gid 65532 nonroot && \
@@ -29,6 +29,10 @@ RUN apk add --no-cache --upgrade ca-certificates && \
       nonroot
 
 COPY --from=builder /usr/bin/hydra /usr/bin/hydra
+
+# set up nsswitch.conf for Go's "netgo" implementation
+# - https://github.com/golang/go/blob/go1.9.1/src/net/conf.go#L194-L275
+RUN echo 'hosts: files dns' > /etc/nsswitch.conf
 
 USER nonroot
 
