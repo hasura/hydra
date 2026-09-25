@@ -1,0 +1,36 @@
+FROM golang:1.22-bookworm@sha256:3d699e4d15d0f8f13c9195c0632a16702b8cbdece2955af1c23b37ae5d55a253 AS builder
+
+WORKDIR /go/src/github.com/ory/hydra
+
+ENV GOTOOLCHAIN=local
+
+RUN apt-get update && apt-get upgrade -y && \
+    mkdir -p ./internal/httpclient
+
+COPY go.mod go.sum ./
+COPY internal/httpclient/go.* ./internal/httpclient/
+
+ENV CGO_ENABLED=1
+
+RUN go mod download
+
+COPY . .
+RUN go build -trimpath -ldflags="-extldflags=-static" -tags sqlite,sqlite_omit_load_extension -o /usr/bin/hydra
+
+FROM alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
+
+RUN apk add --no-cache --upgrade ca-certificates && \
+    addgroup --system --gid 65532 nonroot && \
+    adduser --system --uid 65532 \
+      --gecos "nonroot User" \
+      --home /home/nonroot \
+      --ingroup nonroot \
+      --shell /sbin/nologin \
+      nonroot
+
+COPY --from=builder /usr/bin/hydra /usr/bin/hydra
+
+USER nonroot
+
+ENTRYPOINT ["hydra"]
+CMD ["serve", "all"]
