@@ -1,0 +1,45 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://github.com/hasura/hydra/vex/hydra-1.4.x-2026-10-04",
+  "author": "Hasura, Inc.",
+  "timestamp": "2026-10-04T23:39:15Z",
+  "version": 1,
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2026-33504"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/hydra@sha256%3A6783a11748d9a3d27c842b59266aff92e0db5951c431add40703f2e0d72f7328?repository_url=gcr.io/hasura-ee/hydra&tag=v1.4.16-alpine3.23.6",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/ory/hydra"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "The affected code (ory/x keysetpagination_v2 encrypted page tokens) is not present in this line: ory/x is pinned at v0.0.111 and client listing uses plain offset/limit queries with an integer offset passed to parameterized SQL."
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2026-32286"
+      },
+      "products": [
+        {
+          "@id": "pkg:oci/hydra@sha256%3A6783a11748d9a3d27c842b59266aff92e0db5951c431add40703f2e0d72f7328?repository_url=gcr.io/hasura-ee/hydra&tag=v1.4.16-alpine3.23.6",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/github.com/jackc/pgproto3/v2"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_cannot_be_controlled_by_adversary",
+      "impact_statement": "jackc/pgproto3/v2 v2.3.3 is reachable through the PostgreSQL driver (pgx/v4). Exploitation requires the PostgreSQL server that Hydra connects to be malicious or compromised; Hydra connects only to the deployment's own configured database. No upstream v2 fix exists. Recorded as accepted risk, pending Security Lead and Engineering Lead approval and a Corporate Risk Registry entry (review within 90 days)."
+    }
+  ]
+}
