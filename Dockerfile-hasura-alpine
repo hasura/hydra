@@ -9,7 +9,10 @@
 #   docker build -f Dockerfile-hasura-alpine -t gcr.io/hasura-ee/hydra:v2.3.1-alpine3.23.6 .
 #   docker push gcr.io/hasura-ee/hydra:v2.3.1-alpine3.23.6
 
-FROM golang:1.26.9-bookworm@sha256:d9c68c2c51161e12fd77e4c6320687c9cd86e1af1e3ad6e6cd63ff970641453c AS builder
+# Builder: Hasura-mirrored golang:1.26-bookworm-stable (hasura/external-images).
+# Go 1.26.x (>= 1.26.9), Debian 12 bookworm, multi-arch. The alias floats within the
+# 1.26 line only; move FROM by hand to the next minor at Go 1.26 end of life.
+FROM us-docker.pkg.dev/hasura-container-images/external-images/docker.io/library/golang:1.26-bookworm-stable AS builder
 
 WORKDIR /go/src/github.com/ory/hydra
 
