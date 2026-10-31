@@ -35,7 +35,12 @@ FROM alpine:3.23.6@sha256:85fe1e81d6758c208f3e1eed4338a1997e19d4be002d4dd32d3100
 
 RUN addgroup -S ory; \
     adduser -S ory -G ory -D -H -s /bin/nologin
-RUN apk add -U --no-cache ca-certificates
+RUN apk add -U --no-cache --upgrade ca-certificates ca-certificates-bundle \
+    # Require the Alpine CA update that drops the distrusted eMudhra emSign roots.
+    && for p in ca-certificates ca-certificates-bundle; do \
+         [ "$(apk version -t "$(apk info -e -v $p | sed "s/^$p-//")" 20261020-r0)" != "<" ] \
+           || { echo "$p older than 20261020-r0" >&2; exit 1; }; \
+       done
 
 COPY --from=builder /build/hydra /usr/bin/hydra
 
