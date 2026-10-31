@@ -1,14 +1,10 @@
 # Hasura hardened Alpine image for Hydra v1.4.x (self-hosted / DDN).
-# Built manually and pushed to gcr.io/hasura-ee/hydra.
-#
-# Versioning: Hasura maintains its own patch version independent of upstream
-# Ory tags. Increment the Hasura patch version each time the image is rebuilt
-# (e.g. v1.4.14, v1.4.15, …). Append the Alpine version to the tag.
-#
-# Build & push with a new, previously unused tag. Do not overwrite v1.4.17.
-# Confirm that the example v1.4.18 tag is unused before running:
-#   docker build -f Dockerfile-alpine -t gcr.io/hasura-ee/hydra:v1.4.18-alpine3.23.7 .
-#   docker push gcr.io/hasura-ee/hydra:v1.4.18-alpine3.23.7
+# Published to gcr.io/hasura-ee/hydra by the build-self-hosted-extras Buildkite
+# pipeline in hasura/solutions (.buildkite/pipeline.yaml, step build-hydra-v1),
+# which builds the head of this branch. To release a change: merge it here, then
+# bump HYDRA_VERSION (Hasura's own patch version, e.g. v1.4.17 -> v1.4.18) in that
+# step and its env-loader step. Don't push tags by hand: the pipeline skips any
+# version whose tag already exists.
 
 # Builder: Hasura-mirrored golang:1.26-bookworm-stable (hasura/external-images).
 # Go 1.26.x (>= 1.26.9), Debian 12 bookworm, multi-arch. The alias floats within the
