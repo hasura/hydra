@@ -1,14 +1,10 @@
 # Hasura hardened Alpine image for Hydra v1.4.x (self-hosted / DDN).
-# Built manually and pushed to gcr.io/hasura-ee/hydra.
-#
-# Versioning: Hasura maintains its own patch version independent of upstream
-# Ory tags. Increment the Hasura patch version each time the image is rebuilt
-# (e.g. v1.4.14, v1.4.15, …). Append the Alpine version to the tag.
-#
-# Build & push with a new, previously unused tag. Do not overwrite v1.4.14.
-# Confirm that the example v1.4.15 tag is unused before running:
-#   docker build -f Dockerfile-alpine -t gcr.io/hasura-ee/hydra:v1.4.15-alpine3.23.6 .
-#   docker push gcr.io/hasura-ee/hydra:v1.4.15-alpine3.23.6
+# Published to gcr.io/hasura-ee/hydra by the build-self-hosted-extras Buildkite
+# pipeline in hasura/solutions (.buildkite/pipeline.yaml, step build-hydra-v1),
+# which builds the head of this branch. To release a change: merge it here, then
+# bump HYDRA_VERSION (Hasura's own patch version, e.g. v1.4.17 -> v1.4.18) in that
+# step and its env-loader step. Don't push tags by hand: the pipeline skips any
+# version whose tag already exists.
 
 # Builder: Hasura-mirrored golang:1.26-bookworm-stable (hasura/external-images).
 # Go 1.26.x (>= 1.26.9), Debian 12 bookworm, multi-arch. The alias floats within the
@@ -31,11 +27,16 @@ RUN go install github.com/go-bindata/go-bindata/go-bindata github.com/gobuffalo/
 RUN make sqlbin && packr2
 RUN CGO_ENABLED=0 GO111MODULE=on GOOS=linux GOARCH=amd64 go build -trimpath
 
-FROM alpine:3.23.6@sha256:85fe1e81d6758c208f3e1eed4338a1997e19d4be002d4dd32d3100c9a8c010a0
+FROM alpine:3.23.7@sha256:ff7f0c727dd796aa36787bfcd9a64bf35a6ce72a73451b3359fde849b6703d63
 
 RUN addgroup -S ory; \
     adduser -S ory -G ory -D -H -s /bin/nologin
-RUN apk add -U --no-cache ca-certificates
+RUN apk add -U --no-cache --upgrade ca-certificates ca-certificates-bundle \
+    # Require the Alpine CA update that drops the distrusted eMudhra emSign roots.
+    && for p in ca-certificates ca-certificates-bundle; do \
+         [ "$(apk version -t "$(apk info -e -v $p | sed "s/^$p-//")" 20261020-r0)" != "<" ] \
+           || { echo "$p older than 20261020-r0" >&2; exit 1; }; \
+       done
 
 COPY --from=builder /build/hydra /usr/bin/hydra
 
