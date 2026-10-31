@@ -5,10 +5,10 @@
 # Ory tags. Increment the Hasura patch version each time the image is rebuilt
 # (e.g. v1.4.14, v1.4.15, …). Append the Alpine version to the tag.
 #
-# Build & push with a new, previously unused tag. Do not overwrite v1.4.14.
-# Confirm that the example v1.4.15 tag is unused before running:
-#   docker build -f Dockerfile-alpine -t gcr.io/hasura-ee/hydra:v1.4.15-alpine3.23.6 .
-#   docker push gcr.io/hasura-ee/hydra:v1.4.15-alpine3.23.6
+# Build & push with a new, previously unused tag. Do not overwrite v1.4.17.
+# Confirm that the example v1.4.18 tag is unused before running:
+#   docker build -f Dockerfile-alpine -t gcr.io/hasura-ee/hydra:v1.4.18-alpine3.23.7 .
+#   docker push gcr.io/hasura-ee/hydra:v1.4.18-alpine3.23.7
 
 # Builder: Hasura-mirrored golang:1.26-bookworm-stable (hasura/external-images).
 # Go 1.26.x (>= 1.26.9), Debian 12 bookworm, multi-arch. The alias floats within the
@@ -31,7 +31,7 @@ RUN go install github.com/go-bindata/go-bindata/go-bindata github.com/gobuffalo/
 RUN make sqlbin && packr2
 RUN CGO_ENABLED=0 GO111MODULE=on GOOS=linux GOARCH=amd64 go build -trimpath
 
-FROM alpine:3.23.6@sha256:85fe1e81d6758c208f3e1eed4338a1997e19d4be002d4dd32d3100c9a8c010a0
+FROM alpine:3.23.7@sha256:ff7f0c727dd796aa36787bfcd9a64bf35a6ce72a73451b3359fde849b6703d63
 
 RUN addgroup -S ory; \
     adduser -S ory -G ory -D -H -s /bin/nologin
