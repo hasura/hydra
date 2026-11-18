@@ -53,9 +53,9 @@ require (
 	github.com/urfave/negroni v1.0.0
 	go.opentelemetry.io/otel v1.44.0
 	go.opentelemetry.io/otel/trace v1.44.0
-	golang.org/x/crypto v0.57.0
+	golang.org/x/crypto v0.58.0
 	golang.org/x/oauth2 v0.36.0
-	golang.org/x/tools v0.49.0
+	golang.org/x/tools v0.51.0
 	gopkg.in/square/go-jose.v2 v2.5.1
 )
 
@@ -104,7 +104,7 @@ require (
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/jessevdk/go-flags v1.4.0 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
-	github.com/klauspost/compress v1.18.0 // indirect
+	github.com/klauspost/compress v1.18.7 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/luna-duclos/instrumentedsql v1.1.2 // indirect
@@ -144,12 +144,12 @@ require (
 	go.mongodb.org/mongo-driver v1.3.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/telemetry v0.0.0-20260811182544-a038080d80e5 // indirect
-	golang.org/x/term v0.46.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
+	golang.org/x/net v0.60.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/telemetry v0.0.0-20260924152758-ed294f943157 // indirect
+	golang.org/x/term v0.47.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/gorp.v1 v1.7.2 // indirect
 	gopkg.in/ini.v1 v1.57.0 // indirect
@@ -160,7 +160,7 @@ require (
 replace (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible => github.com/golang-jwt/jwt/v4 v4.5.2
 	go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.5.1
-	golang.org/x/net => golang.org/x/net v0.60.0
+	golang.org/x/net => golang.org/x/net v0.62.0
 	google.golang.org/grpc => google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf => google.golang.org/protobuf v1.33.0
 )
